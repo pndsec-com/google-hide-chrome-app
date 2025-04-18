@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial; width: 300px; padding: 10px; }
+        input, button { width: 100%; margin: 5px 0; }
+        ul { list-style-type: none; padding: 0; }
+
+     
+    li {
+        margin: 5px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    </style>
+</head>
+<body>
+    <h3>Blocked Domains</h3>
+    <input type="text" id="domainInput" placeholder="example.com" />
+    <button id="addBtn">Add</button>
+    <ul id="domainList"></ul>
+    <button id="exportBtn">Export</button>
+    <input type="file" id="importFile" />
+</body>
+<script src="popup.js"></script>
+</html>

@@ -1,56 +1,16 @@
-const blockList = [
-    "msn.com",
-    "internethaber.com",
-    "fotomac.com.tr",
-    "tgrthaber.com.tr",
-    "aksam.com.tr",
-    "trthaber.com",
-    "star.com.tr",
-    "ahaber.com.tr",
-    "sporx.com",
-    "gazetevatan.com",
-    "sozcu.com.tr",
-    "haberturk.com",
-    "mynet.com",
-    "acunn.com",
-    "haber7.com",
-    "sabah.com.tr",
-    "yenisafak.com",
-    "hurriyet.com.tr",
-    "cnnturk.com",
-    "youtube.com",
-    "pinterest.com",
-    "milliyet.com.tr",
-    "haberler.com",
-    "posta.com.tr",
-    "fanatik.com.tr",
-    "cumhuriyet.com.tr",
-    "takvim.com.tr",
-    "ensonhaber.com",
-    "sondakika.com",
-    "t24.com.tr",
-    "ntv.com.tr"
-];
-
 function getDomain(url) {
     try {
         const parsedUrl = new URL(url);
         const hostname = parsedUrl.hostname;
         const parts = hostname.split('.');
-
-        // Handle domains like www.msn.com => msn.com or news.msn.com => msn.com
-        if (parts.length > 2) {
-            return parts.slice(-2).join('.');
-        } else {
-            return hostname;
-        }
+        return parts.slice(-2).join('.');
     } catch (e) {
         return "";
     }
 }
 
-function filterResults() {
-    const results = document.querySelectorAll('div.g, div.MjjYud'); // support classic & new UI
+function filterResults(blockList) {
+    const results = document.querySelectorAll('div.g, div.MjjYud');
 
     results.forEach(result => {
         const link = result.querySelector('a');
@@ -63,7 +23,13 @@ function filterResults() {
     });
 }
 
-filterResults();
+function initFilter() {
+    chrome.storage.sync.get(['blockList'], (data) => {
+        const blockList = data.blockList || [];
+        filterResults(blockList);
+        const observer = new MutationObserver(() => filterResults(blockList));
+        observer.observe(document.body, { childList: true, subtree: true });
+    });
+}
 
-const observer = new MutationObserver(filterResults);
-observer.observe(document.body, { childList: true, subtree: true });
+initFilter();

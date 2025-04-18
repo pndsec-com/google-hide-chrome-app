@@ -1,13 +1,17 @@
 {
   "name": "Google Website Filter",
   "description": "Hides specific websites from Google search results.",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 3,
   "permissions": ["storage"],
   "host_permissions": [
     "https://www.google.com/search*",
     "https://www.google.com.tr/search*"
   ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/icon.png"
+  },
   "content_scripts": [
     {
       "matches": [
